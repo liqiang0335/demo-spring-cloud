@@ -19,14 +19,31 @@ class GatewayConfig {
     @Bean
     fun customRouteLocator(builder: RouteLocatorBuilder): RouteLocator {
         return builder.routes()
-            // 健康检查路由
-            .route("health_check") { r ->
-                r.path("/health")
+            // 路由到 server01 服务
+            .route("server01_route") { r ->
+                r.path("/server01/**")
                     .filters { f ->
-                        f.setStatus(HttpStatus.OK)
-                            .addResponseHeader("Content-Type", "application/json")
+                        f.stripPrefix(1)
+                            .addResponseHeader("X-Response-From", "Gateway")
                     }
-                    .uri("http://localhost:9999")
+                    .uri("http://localhost:9801")
+            }
+            // 路由到 server02 服务
+            .route("server02_route") { r ->
+                r.path("/server02/**")
+                    .filters { f ->
+                        f.stripPrefix(1)
+                            .addResponseHeader("X-Response-From", "Gateway")
+                    }
+                    .uri("http://localhost:9802")
+            }
+            // API路由 - 路由到 server01
+            .route("api_route") { r ->
+                r.path("/api/**")
+                    .filters { f ->
+                        f.addRequestHeader("X-Gateway-Request", "true")
+                    }
+                    .uri("http://localhost:9801")
             }
             // 负载均衡路由示例（如果使用服务发现）
             .route("loadbalanced_route") { r ->

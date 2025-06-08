@@ -58,3 +58,6 @@ logs/
 application-local.yml
 application-local.properties
 *.pid
+
+node_modules
+dist

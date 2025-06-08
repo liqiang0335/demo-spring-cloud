@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spring Cloud Gateway 前端调用示例</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+
+    .container {
+      background: white;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      color: #333;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .section {
+      margin-bottom: 30px;
+      padding: 20px;
+      border: 1px solid #e0e0e0;
+      border-radius: 5px;
+      background-color: #fafafa;
+    }
+
+    .section h3 {
+      color: #555;
+      margin-top: 0;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 5px;
+      font-size: 14px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .response {
+      background-color: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 5px;
+      padding: 15px;
+      margin-top: 10px;
+      font-family: monospace;
+      white-space: pre-wrap;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .endpoint {
+      background-color: #e9ecef;
+      padding: 5px 10px;
+      border-radius: 3px;
+      font-family: monospace;
+      margin: 5px 0;
+    }
+
+    input[type="text"] {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      margin: 5px;
+      width: 200px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Spring Cloud Gateway 前端调用示例</h1>
+
+    <div class="section">
+      <h3>网关地址</h3>
+      <div class="endpoint">http://localhost:9999</div>
+      <p>所有请求都通过网关进行路由</p>
+    </div>
+
+    <div class="section">
+      <h3>1. 通过网关调用服务01 - 方式一（使用 /server01 路径）</h3>
+      <div class="endpoint">GET http://localhost:9999/server01/api/hello</div>
+      <button onclick="callServer01ViaGateway1()">调用服务01 Hello接口</button>
+      <button onclick="callServer01InfoViaGateway1()">调用服务01 Info接口</button>
+      <div id="response1" class="response"></div>
+    </div>
+
+    <div class="section">
+      <h3>2. 通过网关调用服务01 - 方式二（使用 /api 路径）</h3>
+      <div class="endpoint">GET http://localhost:9999/api/hello</div>
+      <p><strong>注意：</strong>根据网关配置，/api/** 路径会被路由到服务01</p>
+      <input type="text" id="nameInput" placeholder="输入名字" value="张三">
+      <button onclick="callServer01ViaGateway2()">调用服务01 Hello接口（带参数）</button>
+      <div id="response2" class="response"></div>
+    </div>
+
+    <div class="section">
+      <h3>3. POST 请求示例</h3>
+      <div class="endpoint">POST http://localhost:9999/server01/api/data</div>
+      <button onclick="postDataToServer01()">发送POST数据到服务01</button>
+      <div id="response3" class="response"></div>
+    </div>
+
+    <div class="section">
+      <h3>4. 网关信息</h3>
+      <div class="endpoint">GET http://localhost:9999/gateway/info</div>
+      <button onclick="getGatewayInfo()">获取网关信息</button>
+      <div id="response4" class="response"></div>
+    </div>
+  </div>
+
+  <script>
+    // 通用的请求处理函数
+    async function makeRequest(url, options = {}, responseElementId) {
+      const responseElement = document.getElementById(responseElementId);
+      responseElement.textContent = '请求中...';
+
+      try {
+        const response = await fetch(url, {
+          headers: {
+            'Content-Type': 'application/json',
+            ...options.headers
+          },
+          ...options
+        });
+
+        const data = await response.json();
+        responseElement.textContent = JSON.stringify({
+          status: response.status,
+          headers: Object.fromEntries(response.headers.entries()),
+          data: data
+        }, null, 2);
+      } catch (error) {
+        responseElement.textContent = `错误: ${error.message}`;
+      }
+    }
+
+    // 方式一：通过 /server01 路径调用
+    function callServer01ViaGateway1() {
+      makeRequest('http://localhost:9999/server01/api/hello', {}, 'response1');
+    }
+
+    function callServer01InfoViaGateway1() {
+      makeRequest('http://localhost:9999/server01/api/info', {}, 'response1');
+    }
+
+    // 方式二：通过 /api 路径调用（会被路由到服务01）
+    function callServer01ViaGateway2() {
+      const name = document.getElementById('nameInput').value || '世界';
+      makeRequest(`http://localhost:9999/api/hello?name=${encodeURIComponent(name)}`, {}, 'response2');
+    }
+
+    // POST 请求示例
+    function postDataToServer01() {
+      const postData = {
+        message: "来自前端的数据",
+        timestamp: new Date().toISOString(),
+        user: "测试用户"
+      };
+
+      makeRequest('http://localhost:9999/server01/api/data', {
+        method: 'POST',
+        body: JSON.stringify(postData)
+      }, 'response3');
+    }
+
+    // 获取网关信息（这个端点需要在网关中实现）
+    function getGatewayInfo() {
+      makeRequest('http://localhost:9999/gateway/info', {}, 'response4');
+    }
+  </script>
+</body>
+
+</html>

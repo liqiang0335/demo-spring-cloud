@@ -30,22 +30,16 @@ spring:
           filters:
             - StripPrefix=1
             - AddRequestHeader=X-Gateway-Request, true
-      
-      # 全局 CORS 配置
-      server:
-        webflux:
-          globalcors:
-            cors-configurations:
-              '[/**]':
-                allowedorigins: "*"
-                allowedmethods:
-                  - GET
-                  - POST
-                  - PUT
-                  - DELETE
-                  - OPTIONS
-                allowedheaders: "*"
-                allowcredentials: false
+
+      # 禁用默认的全局过滤器，确保路由优先级
+      discovery:
+        locator:
+          enabled: false
+  
+  # 禁用静态资源的自动配置，避免与网关路由冲突
+  web:
+    resources:
+      add-mappings: false
 
   # 禁用 properties migrator 警告
   main:
