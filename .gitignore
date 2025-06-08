@@ -1,19 +1,60 @@
 HELP.md
+target/
 .gradle
 build/
-**/*/.idea
-out
-.kotlin
-*.iws
-*.iml
-*.ipr
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### STS ###
+.apt_generated
 .classpath
+.factorypath
 .project
 .settings
 .springBeans
 .sts4-cache
-.apt_generated
-.factorypath
-.DS_Store
-**/*/wrapper/
+
+### IntelliJ IDEA ###
 .idea/
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+### OS ###
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+### Logs ###
+logs/
+*.log
+
+### Temporary files ###
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+### Application specific ###
+application-local.yml
+application-local.properties
+*.pid
