@@ -18,9 +18,14 @@ repositories {
     mavenCentral()
 }
 
-extra["springCloudVersion"] = "2025.0.0"
+extra["springCloudVersion"] = "2023.0.1"
+extra["springCloudAlibabaVersion"] = "2023.0.1.2"
 
 dependencies {
+    implementation(platform("com.alibaba.cloud:spring-cloud-alibaba-dependencies:${property("springCloudAlibabaVersion")}"))
+    implementation(platform("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}"))
+
+    implementation("com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")

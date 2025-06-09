@@ -1,0 +1,10 @@
+server:
+  port: 9801
+
+spring:
+  application:
+    name: server01-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:18848
