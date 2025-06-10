@@ -25,3 +25,7 @@ applyTo: "**"
 - nacos-server: 服务注册与配置中心，提供服务发现和配置管理功能。
 - `docker/docker-compose.yml `文件中定义了所有 nacos 的配置, 容器的名称是 `demo-nacos`。
 - 管理地址是: `http://localhost:18848/nacos`
+
+## 注意事项
+
+- 项目使用 IDEA 开发工具运行中, 所以不要使用 `./gradlew bootRun` 脚本直接运行项目测试, 需要执行时和我确认,让我帮你运行,让我把运行结果发给你分析。
