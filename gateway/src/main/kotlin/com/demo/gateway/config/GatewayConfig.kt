@@ -26,7 +26,7 @@ class GatewayConfig {
                         f.stripPrefix(1)
                             .addResponseHeader("X-Response-From", "Gateway")
                     }
-                    .uri("http://localhost:9801")
+                    .uri("lb://server01-service")  // 使用服务名称
             }
             // 路由到 server02 服务
             .route("server02_route") { r ->
@@ -35,7 +35,7 @@ class GatewayConfig {
                         f.stripPrefix(1)
                             .addResponseHeader("X-Response-From", "Gateway")
                     }
-                    .uri("http://localhost:9802")
+                    .uri("lb://server02-service")  // 使用服务名称
             }
             // API路由 - 路由到 server01
             .route("api_route") { r ->
@@ -43,16 +43,16 @@ class GatewayConfig {
                     .filters { f ->
                         f.addRequestHeader("X-Gateway-Request", "true")
                     }
-                    .uri("http://localhost:9801")
+                    .uri("lb://server01-service")  // 使用服务名称
             }
-            // 负载均衡路由示例（如果使用服务发现）
+            // 负载均衡路由示例
             .route("loadbalanced_route") { r ->
                 r.path("/lb/**")
                     .filters { f ->
                         f.stripPrefix(1)
                             .addRequestHeader("X-Gateway-Timestamp", System.currentTimeMillis().toString())
                     }
-                    .uri("http://localhost:9801") // 可以根据需要修改为 lb://service-name
+                    .uri("lb://server01-service")  // 使用服务名称
             }
             .build()
     }
