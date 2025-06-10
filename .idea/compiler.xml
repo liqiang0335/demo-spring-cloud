@@ -4,12 +4,32 @@
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="eureka-server" target="17" />
+      <module name="eureka-server.main" target="17" />
+      <module name="eureka-server.test" target="17" />
+      <module name="nacos" target="17" />
+      <module name="nacos-server" target="17" />
+      <module name="nacos-server.main" target="17" />
+      <module name="nacos-server.test" target="17" />
+      <module name="nacos.main" target="17" />
+      <module name="nacos.test" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="eureka-server" options="-parameters" />
+      <module name="eureka-server.main" options="-parameters" />
+      <module name="eureka-server.test" options="-parameters" />
       <module name="gateway" options="-parameters" />
       <module name="gateway.main" options="-parameters" />
       <module name="gateway.test" options="-parameters" />
+      <module name="nacos" options="-parameters" />
+      <module name="nacos-server" options="-parameters" />
+      <module name="nacos-server.main" options="-parameters" />
+      <module name="nacos-server.test" options="-parameters" />
+      <module name="nacos.main" options="-parameters" />
+      <module name="nacos.test" options="-parameters" />
       <module name="server01" options="-parameters" />
       <module name="server01.main" options="-parameters" />
       <module name="server01.test" options="-parameters" />

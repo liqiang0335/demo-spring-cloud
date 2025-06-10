@@ -1,40 +1,35 @@
+server:
+  port: 9999
+
 spring:
   application:
     name: gateway
+  profiles:
+    active: dev
+  config:
+    import: 
+      - "optional:nacos:gateway-routes.yml"
+      - "optional:nacos:common-config.yml"
   cloud:
-    gateway:
-      routes:
-        # 路由到 server01 服务
-        - id: server01_route
-          uri: http://localhost:9801
-          predicates:
-            - Path=/server01/**
-          filters:
-            - StripPrefix=1
-            - AddResponseHeader=X-Response-From, Gateway
-        
-        # 路由到 server02 服务
-        - id: server02_route
-          uri: http://localhost:9802
-          predicates:
-            - Path=/server02/**
-          filters:
-            - StripPrefix=1
-            - AddResponseHeader=X-Response-From, Gateway
-        
-        # API路由 - 可以根据需要添加更多路由规则
-        - id: api_route
-          uri: http://localhost:9801
-          predicates:
-            - Path=/api/**
-          filters:
-            - StripPrefix=1
-            - AddRequestHeader=X-Gateway-Request, true
-
-      # 禁用默认的全局过滤器，确保路由优先级
+    nacos:
+      config:
+        server-addr: localhost:18848
+        namespace: public
+        group: DEFAULT_GROUP
+        file-extension: yml
+        refresh-enabled: true
+        shared-configs:
+          - data-id: common-config.yml
+            group: DEFAULT_GROUP
+            refresh: true
+        extension-configs:
+          - data-id: gateway-routes.yml
+            group: DEFAULT_GROUP
+            refresh: true
       discovery:
-        locator:
-          enabled: false
+        server-addr: localhost:18848
+        namespace: public
+        group: DEFAULT_GROUP
   
   # 禁用静态资源的自动配置，避免与网关路由冲突
   web:
@@ -44,11 +39,14 @@ spring:
   # 禁用 properties migrator 警告
   main:
     banner-mode: console
+
+# 暴露配置刷新端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh,health,info
     
-# 服务器配置
-server:
-  port: 9999
-  
 # 日志配置
 logging:
   level:

@@ -23,7 +23,7 @@ class GatewayConfig {
             .route("server01_route") { r ->
                 r.path("/server01/**")
                     .filters { f ->
-                        f.stripPrefix(1)
+                        f.stripPrefix(1) // 去掉前缀: 去掉 URL 路径中的第一个部分
                             .addResponseHeader("X-Response-From", "Gateway")
                     }
                     .uri("lb://server01-service")  // 使用服务名称
