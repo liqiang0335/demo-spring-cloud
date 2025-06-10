@@ -1,11 +1,10 @@
 services:
   demo-nacos:
-    image: nacos/nacos-server:latest
+    image: nacos/nacos-server:v2.5.0
     container_name: demo-nacos
     ports:
-      - "18080:8080" # 主要端口，客户端连接
-      - "18848:8848" # gRPC端口（2.0+版本需要）
-      - "19849:9849" # gRPC端口（客户端gRPC请求）
+      - "18848:8848" # 服务注册发现端口（客户端连接）
+      - "19848:9848" # gRPC端口（2.0+版本需要）
     environment:
       - MODE=standalone
       - NACOS_AUTH_TOKEN=SecretKey012345678901234567890123456789012345678901234567890123456789

@@ -6,7 +6,14 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="eureka-server" target="17" />
+      <module name="eureka-server.main" target="17" />
+      <module name="eureka-server.test" target="17" />
+      <module name="nacos" target="17" />
       <module name="nacos-server" target="17" />
+      <module name="nacos-server.main" target="17" />
+      <module name="nacos-server.test" target="17" />
+      <module name="nacos.main" target="17" />
+      <module name="nacos.test" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

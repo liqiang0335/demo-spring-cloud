@@ -7,4 +7,25 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: localhost:18848
+        server-addr: 127.0.0.1:18848
+        namespace: public
+        group: DEFAULT_GROUP
+        heart-beat-timeout: 30000
+        ip-delete-timeout: 30000
+        fail-fast: false
+        ip: 127.0.0.1
+        port: ${server.port}
+        # 启用服务发现
+        enabled: true
+        # 配置元数据
+        metadata:
+          version: 1.0.0
+          author: demo
+
+# 日志配置
+logging:
+  level:
+    com.alibaba.nacos: DEBUG
+    com.alibaba.cloud.nacos: DEBUG
+    org.springframework.cloud: DEBUG
+    root: INFO
