@@ -4,28 +4,36 @@ server:
 spring:
   application:
     name: server01-service
+  profiles:
+    active: dev
+  config:
+    import: 
+      - "optional:nacos:server01-config.yml"
+      - "optional:nacos:common-config.yml"
   cloud:
     nacos:
+      config:
+        server-addr: 127.0.0.1:18848
+        namespace: public
+        group: DEFAULT_GROUP
+        file-extension: yml
+        refresh-enabled: true
+        shared-configs:
+          - data-id: common-config.yml
+            group: DEFAULT_GROUP
+            refresh: true
+        extension-configs:
+          - data-id: server01-config.yml
+            group: DEFAULT_GROUP
+            refresh: true
       discovery:
         server-addr: 127.0.0.1:18848
         namespace: public
         group: DEFAULT_GROUP
-        heart-beat-timeout: 30000
-        ip-delete-timeout: 30000
-        fail-fast: false
-        ip: 127.0.0.1
-        port: ${server.port}
-        # 启用服务发现
-        enabled: true
-        # 配置元数据
-        metadata:
-          version: 1.0.0
-          author: demo
 
-# 日志配置
-logging:
-  level:
-    com.alibaba.nacos: DEBUG
-    com.alibaba.cloud.nacos: DEBUG
-    org.springframework.cloud: DEBUG
-    root: INFO
+# 暴露配置刷新端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh,health,info

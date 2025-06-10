@@ -1,17 +1,24 @@
 package com.demo.server02.controller
 
+import com.demo.server02.config.Server02Config
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api")
 class Server02Controller {
 
+    @Autowired
+    private lateinit var server02Config: Server02Config
+
     @GetMapping("/hello")
     fun hello(@RequestParam(defaultValue = "World") name: String): Map<String, Any> {
         return mapOf(
-            "message" to "Hello $name from Server02!",
+            "message" to "${server02Config.message} $name!",
             "server" to "server02",
             "port" to 9802,
+            "version" to server02Config.version,
+            "featureX_enabled" to server02Config.enableFeatureX,
             "timestamp" to System.currentTimeMillis()
         )
     }
@@ -21,8 +28,28 @@ class Server02Controller {
         return mapOf(
             "service" to "server02",
             "port" to 9802,
-            "version" to "1.0.0",
-            "status" to "running"
+            "version" to server02Config.version,
+            "status" to "running",
+            "config" to mapOf(
+                "message" to server02Config.message,
+                "enableFeatureX" to server02Config.enableFeatureX,
+                "batchSize" to server02Config.batchSize,
+                "retryAttempts" to server02Config.retryAttempts,
+                "allowedUsers" to server02Config.allowedUsers
+            )
+        )
+    }
+
+    @GetMapping("/config")
+    fun getConfig(): Map<String, Any> {
+        return mapOf(
+            "message" to server02Config.message,
+            "version" to server02Config.version,
+            "enableFeatureX" to server02Config.enableFeatureX,
+            "batchSize" to server02Config.batchSize,
+            "retryAttempts" to server02Config.retryAttempts,
+            "allowedUsers" to server02Config.allowedUsers,
+            "lastUpdated" to System.currentTimeMillis()
         )
     }
 

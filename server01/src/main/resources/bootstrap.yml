@@ -1,15 +1,6 @@
-server:
-  port: 9801
-
 spring:
   application:
     name: server01-service
-  profiles:
-    active: dev
-  config:
-    import: 
-      - "optional:nacos:server01-config.yml"
-      - "optional:nacos:common-config.yml"
   cloud:
     nacos:
       config:
@@ -17,11 +8,14 @@ spring:
         namespace: public
         group: DEFAULT_GROUP
         file-extension: yml
+        # 启用配置刷新
         refresh-enabled: true
+        # 配置共享
         shared-configs:
           - data-id: common-config.yml
             group: DEFAULT_GROUP
             refresh: true
+        # 扩展配置
         extension-configs:
           - data-id: server01-config.yml
             group: DEFAULT_GROUP

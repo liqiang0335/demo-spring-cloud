@@ -1,15 +1,6 @@
-server:
-  port: 9999
-
 spring:
   application:
-    name: gateway
-  profiles:
-    active: dev
-  config:
-    import: 
-      - "optional:nacos:gateway-routes.yml"
-      - "optional:nacos:common-config.yml"
+    name: server02-service
   cloud:
     nacos:
       config:
@@ -17,28 +8,22 @@ spring:
         namespace: public
         group: DEFAULT_GROUP
         file-extension: yml
+        # 启用配置刷新
         refresh-enabled: true
+        # 配置共享
         shared-configs:
           - data-id: common-config.yml
             group: DEFAULT_GROUP
             refresh: true
+        # 扩展配置
         extension-configs:
-          - data-id: gateway-routes.yml
+          - data-id: server02-config.yml
             group: DEFAULT_GROUP
             refresh: true
       discovery:
         server-addr: localhost:18848
         namespace: public
         group: DEFAULT_GROUP
-  
-  # 禁用静态资源的自动配置，避免与网关路由冲突
-  web:
-    resources:
-      add-mappings: false
-
-  # 禁用 properties migrator 警告
-  main:
-    banner-mode: console
 
 # 暴露配置刷新端点
 management:
@@ -46,10 +31,3 @@ management:
     web:
       exposure:
         include: refresh,health,info
-    
-# 日志配置
-logging:
-  level:
-    org.springframework.cloud.gateway: DEBUG
-    org.springframework.web.reactive: DEBUG
-    org.springframework.boot.context.properties: WARN

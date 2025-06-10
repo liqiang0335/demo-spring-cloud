@@ -8,7 +8,7 @@ applyTo: "**"
 - 主要框架：`Spring Boot 3.2` + `Spring Cloud`
 - 服务注册与配置中心：`Nacos v2`
 - API 网关：`Spring Cloud Gateway`
-- 如果有必要时请使用 `context7` MCP 查询技术最新的文档
+- 需要最新的技术文档时, 使用 `context7` MCP 查询
 
 ## 项目结构
 

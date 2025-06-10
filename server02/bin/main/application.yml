@@ -4,7 +4,36 @@ server:
 spring:
   application:
     name: server02-service
+  profiles:
+    active: dev
+  config:
+    import: 
+      - "optional:nacos:server02-config.yml"
+      - "optional:nacos:common-config.yml"
   cloud:
     nacos:
+      config:
+        server-addr: localhost:18848
+        namespace: public
+        group: DEFAULT_GROUP
+        file-extension: yml
+        refresh-enabled: true
+        shared-configs:
+          - data-id: common-config.yml
+            group: DEFAULT_GROUP
+            refresh: true
+        extension-configs:
+          - data-id: server02-config.yml
+            group: DEFAULT_GROUP
+            refresh: true
       discovery:
         server-addr: localhost:18848
+        namespace: public
+        group: DEFAULT_GROUP
+
+# 暴露配置刷新端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh,health,info

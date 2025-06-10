@@ -26,6 +26,7 @@ dependencies {
     implementation(platform("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}"))
     
     implementation("com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery")
+    implementation("com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
