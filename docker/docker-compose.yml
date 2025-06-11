@@ -1,6 +1,6 @@
 services:
   demo-nacos:
-    image: nacos/nacos-server:v2.5.0
+    image: nacos/nacos-server:2.5.0
     container_name: demo-nacos
     ports:
       - "18848:8848" # 服务注册发现端口（客户端连接）
